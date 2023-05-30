@@ -14,11 +14,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link} from "react-router-dom"
 import {useFormik} from "formik"
 import { signinSchema } from '../schemas';
+import { useNavigate } from 'react-router-dom';
 
 
 const defaultTheme = createTheme();
 
+
 export default function SignIn() {
+
+  const navigate = useNavigate()
+
+
 
 
     const initialValues={
@@ -26,11 +32,12 @@ export default function SignIn() {
         password:""
     }
 
-    const {values, errors, handleBlur, handleChange, handleSubmit} = useFormik({
+    const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues:initialValues,
         validationSchema:signinSchema,
         onSubmit:(values)=>{
             console.log(values)
+            navigate('/home')
         }
     })
 
@@ -74,9 +81,9 @@ export default function SignIn() {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              autoFocus
+              // autoFocus
             />
-            <p style={{color:"red", fontSize: "12px"}} >{errors.email}</p>
+           {errors.email && touched.email ?( <p style={{color:"red", fontSize: "12px"}} >{errors.email}</p> ): null}
             <TextField
               margin="normal"
               required
@@ -90,7 +97,7 @@ export default function SignIn() {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            <p style={{color:"red", fontSize: "12px"}}>{errors.password}</p>
+            {errors.password && touched.password ?( <p style={{color:"red", fontSize: "12px"}} >{errors.password}</p> ): null}
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
@@ -102,7 +109,7 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2 }}
               onSubmit={handleSubmit}
             >
-              <Link to="/home" >Sign In</Link>
+              Sign In
             </Button>
             <Grid container>
               <Grid item xs>

@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link} from 'react-router-dom'
 import {useFormik} from "formik";
 import { signupSchema } from '../schemas';
+import { useNavigate } from 'react-router-dom';
+import { boolean } from 'yup';
 
 
 
@@ -22,25 +24,28 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
 
+  const navigate = useNavigate()
+
     const initialValues={
         firstName: "",
         lastName:"",
         email:"",
-        password:""
+        password:"",
+        confirmPassword:"",
+        checkbox : boolean,
     }
 
-    const {values, errors, handleBlur, handleChange, handleSubmit} = useFormik({
+    const {values, errors, touched,setFieldValue, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues:initialValues,
         validationSchema: signupSchema,
+
         onSubmit:(values)=>{
             console.log(values)
+            
+            window.alert("Successfully signed up")
+            navigate("/login")
         }
     })
-
-
-    const submitHandle =()=>{
-        window.alert("Successfully signed up")
-    }
 
 
 
@@ -84,9 +89,9 @@ export default function SignUp() {
                   value={values.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  autoFocus
+                
                 />
-        <p style={{color:"red", fontSize: "12px"}} >{errors.firstName}</p>
+            {errors.firstName && touched.firstName ?( <p style={{color:"red", fontSize: "12px"}} >{errors.firstName}</p> ): null}
 
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -101,7 +106,7 @@ export default function SignUp() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                        <p style={{color:"red", fontSize: "12px"}} >{errors.lastName}</p>
+            {errors.lastName && touched.lastName ?( <p style={{color:"red", fontSize: "12px"}} >{errors.lastName}</p> ): null}
 
               </Grid>
               <Grid item xs={12}>
@@ -117,10 +122,11 @@ export default function SignUp() {
                   onBlur={handleBlur}
 
                 />
-        <p style={{color:"red", fontSize: "12px"}} >{errors.email}</p>
+            {errors.email && touched.email ?( <p style={{color:"red", fontSize: "12px"}} >{errors.email}</p> ): null}
 
               </Grid>
-              <Grid item xs={12}>
+              
+                <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -132,16 +138,36 @@ export default function SignUp() {
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
-
                 />
-        <p style={{color:"red", fontSize: "12px"}} >{errors.password}</p>
+            {errors.password && touched.password ?( <p style={{color:"red", fontSize: "12px"}} >{errors.password}</p> ): null}
+
+              </Grid>
+              
+                <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="confirmPassword"
+                  id="confirmPassword"
+                  autoComplete="new-password"
+                  value={values.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+            {errors.confirmPassword && touched.confirmPassword ?( <p style={{color:"red", fontSize: "12px"}} >{errors.confirmPassword}</p> ): null}
 
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={<Checkbox name='checkbox' onChange={()=>{
+                    setFieldValue('checkbox',!values.checkbox)
+                  } } onBlur={handleBlur} value={values.checkbox}  color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
+                            {values.checkbox  ?( <p style={{color:"red", fontSize: "12px"}} >{errors.checkbox}</p> ): null}
+
               </Grid>
             </Grid>
             <Button
@@ -151,7 +177,7 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
               onSubmit={handleSubmit}
             >
-                <Link to='/login' onClick={submitHandle}  >Sign Up</Link>
+                Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
