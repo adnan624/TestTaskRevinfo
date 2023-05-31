@@ -11,6 +11,7 @@ const FirstPage = () => {
 
       <Link to='/signup' ><button>Sign up</button></Link>
       <Link to='/login' ><button>Log In</button></Link>
+      <Link to='/api'><button>Api</button></Link>
     </div>
   )
 }

@@ -10,9 +10,8 @@ export const signupSchema = Yup.object({
         "Password must contain 8 characters, one uppercase letter, one lowercase letter, one number, and one special character"
       ).required("Please Enter password"),
     confirmPassword:Yup.string().required().oneOf([Yup.ref("password"),null],"Password must match"),
-    checkbox: Yup.string()
-            .oneOf([], "You must accept the terms and conditions")
-
+    checkbox: Yup.bool().required("You must accept the terms and conditions")
+           
 })
 
 

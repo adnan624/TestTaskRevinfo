@@ -1,0 +1,30 @@
+.outer-div{
+display: grid;
+grid-template-columns: 350px 350px 350px 350px;
+justify-content: center;
+align-items: center;
+background-color: #d1d5db;
+}
+.card-outer{
+    display: flex;
+    flex-direction: column;
+    background-color: #e5e7eb;
+    height: auto;
+    width: 300px;
+    margin: 30px;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+.card-detail{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 20px;
+    color: gray;
+}
+.card-desc{
+    font-size: 20px;
+    color: gray;
+    font-style: italic;
+}

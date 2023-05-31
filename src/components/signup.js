@@ -16,7 +16,6 @@ import {Link} from 'react-router-dom'
 import {useFormik} from "formik";
 import { signupSchema } from '../schemas';
 import { useNavigate } from 'react-router-dom';
-import { boolean } from 'yup';
 
 
 
@@ -32,22 +31,22 @@ export default function SignUp() {
         email:"",
         password:"",
         confirmPassword:"",
-        checkbox : boolean,
+        checkbox : "",
     }
 
-    const {values, errors, touched,setFieldValue, handleBlur, handleChange, handleSubmit} = useFormik({
+    const {values, errors, touched,setFieldValue, handleBlur, handleChange, handleSubmit,isValid} = useFormik({
         initialValues:initialValues,
         validationSchema: signupSchema,
-
         onSubmit:(values)=>{
             console.log(values)
-            
+            console.log("gcgdfvgdfgug")
             window.alert("Successfully signed up")
-            navigate("/login")
+            // navigate("/login")
+            navigate("/otp")
         }
     })
 
-
+console.log(isValid,"isValid",errors);
 
 //   const handleSubmit = (event) => {
 //     event.preventDefault();
@@ -163,7 +162,8 @@ export default function SignUp() {
                 <FormControlLabel
                   control={<Checkbox name='checkbox' onChange={()=>{
                     setFieldValue('checkbox',!values.checkbox)
-                  } } onBlur={handleBlur} value={values.checkbox}  color="primary" />}
+                  
+                  } } value={values.checkbox}  color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
                             {values.checkbox  ?( <p style={{color:"red", fontSize: "12px"}} >{errors.checkbox}</p> ): null}
@@ -177,7 +177,7 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
               onSubmit={handleSubmit}
             >
-                Sign Up
+              Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
