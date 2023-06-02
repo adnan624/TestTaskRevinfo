@@ -28,3 +28,12 @@ background-color: #d1d5db;
     color: gray;
     font-style: italic;
 }
+
+.category-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: gray;
+    margin-bottom: 10px;
+}
