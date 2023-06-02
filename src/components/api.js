@@ -45,23 +45,7 @@ const Api = () => {
     }
   };
 
-  const handleSelectCategory = (event) => {
-    setCategories(event.target.value);
-    setSortedList(apiData?.filter((item)=>item.Category === categories))
-  };
   console.log(categories);
-
-  let res = apiData
-    ?.filter(
-      (item, index, self) =>
-        self.findIndex((i) => i.Category == item.Category) == index
-    )
-    .map((item) => item.Category)
-    .sort((a, b) => a - b);
-  console.log("res=>>>>", res);
-
-
-  const handleCategory = () => {};
 
   const fetchData = () => {
     Axios.get("https://api.publicapis.org/entries").then((res) => {
@@ -85,7 +69,21 @@ const Api = () => {
     });
   };
 
- 
+  const handleSelectCategory = (event) => {
+
+      setSortedList(apiData?.filter((item)=>item.Category === event.target.value))
+      let res = apiData
+      ?.filter(
+        (item, index, self) =>
+          self.findIndex((i) => i.Category == item.Category) === index
+      )
+      .map((item) => item.Category)
+      .sort((a, b) => a - b);
+    console.log("res=>>>>", res);
+  
+    setCategories(event.target.value);
+  };
+
   useEffect(() => {
     fetchData(search);
   }, [search]);
