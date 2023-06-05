@@ -1,14 +1,16 @@
-import { hexToRgb } from "@mui/material";
-import { height } from "@mui/system";
+
 import React, { useState, useEffect } from "react";
 import OtpInput from "react-otp-input";
 
 const Timer = () => {
   const [seconds, setSeconds] = useState(60);
   const [timerRun, setTimerRun] = useState(false);
+
+
   useEffect(() => {
     const startTime = localStorage.getItem("startTime");
     const savedSeconds = localStorage.getItem("seconds");
+
 
     if (startTime && savedSeconds) {
       const elapsedTime = Math.floor(
@@ -17,14 +19,14 @@ const Timer = () => {
       const remainingSeconds = Math.max(60 - elapsedTime, 0);
       setSeconds(remainingSeconds);
     } else {
-      localStorage.setItem("startTime", Date.now());
-      localStorage.setItem("seconds", seconds);
+      localStorage.setItem("startTime", Date.now().toString());
+      localStorage.setItem("seconds", seconds.toString());
     }
 
     const timer = setInterval(() => {
       if (seconds > 0) {
         setSeconds((prevSeconds) => prevSeconds - 1);
-        localStorage.setItem("seconds", seconds - 1);
+        localStorage.setItem("seconds", (seconds - 1).toString());
       }
     }, 1000);
 
@@ -46,8 +48,8 @@ const Timer = () => {
 
   const resetTimer = () => {
     setSeconds(60);
-    localStorage.setItem("startTime", Date.now());
-    localStorage.setItem("seconds", 60);
+    localStorage.setItem("startTime", Date.now().toString());
+    localStorage.setItem("seconds", "60");
     setTimerRun(!timerRun);
   };
   return (
@@ -68,7 +70,7 @@ export default function Otp() {
     setOtp("");
   };
 
-  function createTimer(callback) {
+  function createTimer(callback:any){
     let seconds = 60;
 
     const timer = setInterval(() => {
@@ -83,7 +85,7 @@ export default function Otp() {
   }
 
   // Usage
-  const timerCallback = () => {
+  const timerCallback =  ()=>  {
     console.log("Timer completed!");
   };
 
@@ -102,7 +104,13 @@ export default function Otp() {
             alignItems: "center",
           }}
         >
-          <p>{createTimer(timerCallback)}</p>
+          
+          <p>
+            <>
+            {createTimer(timerCallback)}
+            </>
+            </p>
+
           <OtpInput
             value={otp}
             onChange={setOtp}

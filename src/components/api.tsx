@@ -8,22 +8,22 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { AnyARecord } from "dns";
 
 const Api = () => {
-  const [apiData, setApiData] = useState(null);
-  const [sortedList, setSortedList] = useState(null);
-  const [count, setCount] = useState("");
+  const [apiData, setApiData] = useState([]);
+  const [sortedList, setSortedList] = useState([]);
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("");
   const [categories, setCategories] = useState("");
   const [categoryList, setCategoryList] = useState([]);
 
 
-  const handleOrder = (event) => {
+  const handleOrder = (event: any) => {
     setOrder(event.target.value);
 
     if (order !== "ascending") {
-      sortedList.sort(function (a, b) {
+      sortedList?.sort(function (a:any, b:any) {
         if (a.API < b.API) {
           return -1;
         }
@@ -32,8 +32,8 @@ const Api = () => {
         }
         return 0;
       });
-    } else if (order !== "descending") {
-      sortedList.sort(function (a, b) {
+    } else if (order  == 'ascending') {
+      sortedList?.sort(function (a:any, b:any) {
         if (a.API < b.API) {
           return 1;
         }
@@ -50,17 +50,16 @@ const Api = () => {
   const fetchData = () => {
     Axios.get("https://api.publicapis.org/entries").then((res) => {
       setApiData(res?.data?.entries);
-      setCount(res?.data?.count);
       let responce = res?.data?.entries
         ?.filter(
-          (item, index, self) =>
-            self.findIndex((i) => i.Category == item.Category) == index
+          (item:any, index:any, self:any) =>
+            self.findIndex((i:any) => i.Category == item.Category) == index
         )
-        .map((item) => item.Category)
-        .sort((a, b) => a - b);
+        .map((item:any) => item.Category)
+        .sort((a:any, b:any) => a - b);
       setCategoryList(responce);
       setSortedList(
-        res?.data?.entries.filter((item) => {
+        res?.data?.entries.filter((item:any) => {
           if (item.API.toLowerCase().includes(search.toLocaleLowerCase())) {
             return true;
           }
@@ -69,34 +68,56 @@ const Api = () => {
     });
   };
 
-  const handleSelectCategory = (event) => {
+  const handleSelectCategory = (event:any) => {
 
-      setSortedList(apiData?.filter((item)=>item.Category === event.target.value))
+      setSortedList(apiData?.filter((item:any)=>item.Category === event.target.value))
       let res = apiData
       ?.filter(
-        (item, index, self) =>
-          self.findIndex((i) => i.Category == item.Category) === index
+        (item:any, index:any, self:any) =>
+          self.findIndex((i:any) => i.Category == item.Category) === index
       )
-      .map((item) => item.Category)
-      .sort((a, b) => a - b);
+      .map((item:any) => item.Category)
+      .sort((a:any, b:any) => a - b);
     console.log("res=>>>>", res);
   
     setCategories(event.target.value);
   };
 
   useEffect(() => {
-    fetchData(search);
+    fetchData();
   }, [search]);
 
-  const check = (key) => {
-    const object = {
+
+  interface colour{
+    [x: string]: any;
+    key: any;
+    unknown: String,
+    no: string,
+    yes: string,
+    true: string,
+    false: string,
+  }
+
+
+  interface apiResponse {
+    API: string
+    Description: string
+    Auth: string
+    HTTPS: string
+    Cors: any
+    Category:string
+  }
+
+  const check = (key:any) => {
+    const object:colour = {
       unknown: "red",
       no: "grey",
       yes: "green",
       true: "#10b981",
       false: "#ef4444",
+      key: undefined
     };
-    return object[key];
+      return object?.key
   };
   return (
     <>
@@ -135,8 +156,8 @@ const Api = () => {
             onChange={handleSelectCategory}
             style={{ width: "400px" }}
           >
-            {categoryList?.map((items) => (
-              <MenuItem value={`${items}`}>{items}</MenuItem>
+            {categoryList?.map((items, key) => (
+              <MenuItem  key={key} value={`${items}`}>{items}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -146,9 +167,9 @@ const Api = () => {
         {sortedList?.length} Results Found{" "}
       </h3>
       <div className="outer-div">
-        {sortedList?.map((items) => {
+        {sortedList?.map((items:apiResponse,index) => {
           return (
-            <div className="card-outer">
+            <div className="card-outer" key={index} >
               <h2>{items.API}</h2>
               <p className="card-desc">{items.Description}</p>
               <div>

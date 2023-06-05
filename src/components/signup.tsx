@@ -12,10 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Link} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {useFormik} from "formik";
 import { signupSchema } from '../schemas';
-import { useNavigate } from 'react-router-dom';
 
 
 
@@ -39,7 +38,6 @@ export default function SignUp() {
         validationSchema: signupSchema,
         onSubmit:(values)=>{
             console.log(values)
-            console.log("gcgdfvgdfgug")
             window.alert("Successfully signed up")
             // navigate("/login")
             navigate("/otp")
@@ -48,14 +46,6 @@ export default function SignUp() {
 
 console.log(isValid,"isValid",errors);
 
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     const data = new FormData(event.currentTarget);
-//     console.log({
-//       email: data.get('email'),
-//       password: data.get('password'),
-//     });
-//   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -171,11 +161,12 @@ console.log(isValid,"isValid",errors);
               </Grid>
             </Grid>
             <Button
+            color='primary'
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onSubmit={handleSubmit}
+              // onClick={handleSubmit}
             >
               Sign Up
             </Button>
